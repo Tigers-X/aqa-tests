@@ -21,6 +21,8 @@ jobs:
               repo: context.repo.repo
             });
 
+            console.log(issueData);
+
             const commentsUrl = issueData.comments_url;
             const { data: commentsData } = await github.request(commentsUrl);
 
@@ -29,7 +31,7 @@ jobs:
             const sandboxRepo = context.repo.repo;
 
             let assigned = false;
-            const actualLabels = issueData.data.labels.map(label => label['name']);
+            const actualLabels = issueData.labels.map(label => label['name']);
 
             resultString = `Issue number: ${context.issue.number}\n`;
             resultString += `Actual Components: ${actualLabels}\n`;
