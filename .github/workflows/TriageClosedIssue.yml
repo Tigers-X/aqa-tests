@@ -42,6 +42,7 @@ jobs:
 
             // Filtering the Comments Data to find "FYI"
             for (const comment of commentsData) {
+              console.log(comment);
               const lowercaseCommentBody = comment.body.toLowerCase();
               if (lowercaseCommentBody.includes("fyi")) {
                 const restCommentBody = lowercaseCommentBody.body.replace("fyi", "");
