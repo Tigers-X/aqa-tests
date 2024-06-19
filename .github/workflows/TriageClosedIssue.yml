@@ -11,20 +11,10 @@ jobs:
     name: Issue Closed
     runs-on: ubuntu-latest
     steps:
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Installing Axios
-        run: npm install axios
-
       - name: Commenting on the issue
-        uses: actions/github-script@v5
+        uses: actions/github-script@v4
         with:
           script: |
-            const axios = require('axios');
-
             const { data: issueData } = await github.issues.get({
               issue_number: context.payload.issue.number,
               owner: context.repo.owner,
