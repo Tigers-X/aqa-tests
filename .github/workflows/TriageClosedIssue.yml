@@ -28,18 +28,14 @@ jobs:
             const sandboxOwner = context.repo.owner;
             const sandboxRepo = context.repo.repo;
 
-            resultString = `Issue number: ${context.issue.number}\n`;
             let assigned = false;
             const actualLabels = issueData.data.labels.map(label => label['name']);
 
-            resultString = `Issue Number: ${context.issue.number}\n`;
+            resultString = `Issue number: ${context.issue.number}\n`;
             resultString += `Actual Components: ${actualLabels}\n`;
-
-            let assigned = false;
 
             // Filtering the Comments Data to find "FYI"
             for (const comment of commentsData) {
-              console.log(comment);
               const lowercaseCommentBody = comment.body.toLowerCase();
               if (lowercaseCommentBody.includes("fyi")) {
                 const restCommentBody = lowercaseCommentBody.replace("fyi", "");
