@@ -1,0 +1,64 @@
+name: Testing Triager on Closed issues
+run-name: Triager Tester in GitHub Actions
+
+on:
+
+    issues:
+        types: [closed]
+
+jobs:
+  issue_closed:
+    name: Issue Closed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Installing Axios
+        run: npm install axios
+
+      - name: Commenting on the issue
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const axios = require('axios');
+
+            const { data: issueData } = await github.issues.get({
+              issue_number: context.payload.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            const commentsUrl = issueData.comments_url;
+            const { data: commentsData } = await github.request(commentsUrl);
+
+            const sandboxIssueNumber = 10;
+            const sandboxOwner = context.repo.owner;
+            const sandboxRepo = context.repo.repo;
+
+            resultString = "";
+
+            // Filtering the Comments Data to find "FYI"
+            for (const comment of commentsData) {
+              const lowercaseCommentBody = comment.body.toLowerCase();
+              if (lowercaseCommentBody.includes("fyi")) {
+                const restCommentBody = lowercaseCommentBody.body.replace("fyi", "");
+                const profiles = restCommentBody.replace(/[^\w\s]/g, '');
+                resultString += `Assigned developers: ${profiles}\n`;
+              }
+            }
+
+            if (resultString.length === 0) {
+              resultString += "No Assigned Developers :(";
+            }
+
+            await github.issues.createComment({
+              issue_number: sandboxIssueNumber,
+              owner: sandboxOwner,
+              repo: sandboxRepo,
+              body: resultString
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
