@@ -28,20 +28,22 @@ jobs:
             const sandboxOwner = context.repo.owner;
             const sandboxRepo = context.repo.repo;
 
-            resultString = "";
+            resultString = `Issue number: ${context.issue.number}\n`;
+            const assigned = false;
 
             // Filtering the Comments Data to find "FYI"
             for (const comment of commentsData) {
               console.log(comment);
               const lowercaseCommentBody = comment.body.toLowerCase();
               if (lowercaseCommentBody.includes("fyi")) {
-                const restCommentBody = lowercaseCommentBody.body.replace("fyi", "");
+                const restCommentBody = lowercaseCommentBody.replace("fyi", "");
                 const profiles = restCommentBody.replace(/[^\w\s]/g, '');
                 resultString += `Assigned developers: ${profiles}\n`;
+                assigned = true;
               }
             }
 
-            if (resultString.length === 0) {
+            if (!assigned) {
               resultString += "No Assigned Developers :(";
             }
 
