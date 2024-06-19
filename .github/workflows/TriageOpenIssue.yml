@@ -49,7 +49,7 @@ jobs:
                     predictedLabels = issueComment.recommended_components;
 
                     resultString = `Issue Number: ${context.issue.number}\n`;
-                    resultString += 'Status: Open';
+                    resultString += 'Status: Open\n';
                     resultString += `Recommended Components: ${predictedLabels.join(', ')}\n`;
                     resultString += `Recommended Assignees: ${predictedAssignees.join(', ')}\n`;
                   
