@@ -51,18 +51,18 @@ jobs:
                     resultString += `Recommended Assignees: ${predictedAssignees.join(', ')}\n`;
                   
                     await github.issues.createComment({
-                      issue_number: sandboxIssueNumber,
-                      owner: "eclipse-openj9",
-                      repo: "openj9",
+                      issue_number: context.issue.number,
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
                       body: resultString
                     });
 
                   } catch (error) {
                     await github.issues.createComment({
-                      issue_number: sandboxIssueNumber,
-                      owner: "eclipse-openj9",
-                      repo: "openj9",
-                      body: "Our server is down, please try again later."
+                      issue_number: context.issue.number,
+                      owner: context.repo.owner,
+                      repo: context.repo.repo,
+                      body: error,
                     });
                   }
                   run();
