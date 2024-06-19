@@ -29,7 +29,7 @@ jobs:
             const sandboxRepo = context.repo.repo;
 
             resultString = `Issue number: ${context.issue.number}\n`;
-            const assigned = false;
+            let assigned = false;
 
             // Filtering the Comments Data to find "FYI"
             for (const comment of commentsData) {
