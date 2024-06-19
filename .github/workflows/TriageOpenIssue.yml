@@ -13,10 +13,10 @@ jobs:
           - name: Set up Node.js
             uses: actions/setup-node@v2
             with:
-              node-version: '14'
+              node-version: '16'
 
           - name: Install dependencies
-            run: npm install axios
+            run: npm install
 
           - name: commenting on issues
             uses: actions/github-script@v4
@@ -24,12 +24,14 @@ jobs:
                 github-token: ${{secrets.GITHUB_TOKEN}}
                 script: |
                     const axios = require('axios');
+                    
                     let input = {
                       "issue": {
-                        "title": context.payload.issue.title,
-                        "body": context.payload.issue.body,
+                        "issue_title": context.payload.issue.title,
+                        "issue_description": context.payload.issue.description,
                       }
-                    } 
+                    }
+
                     console.log('input: ', input)
 
                     const apiUrl = "http://140.211.168.122/recommendation";
