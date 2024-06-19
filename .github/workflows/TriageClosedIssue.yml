@@ -41,7 +41,7 @@ jobs:
               const lowercaseCommentBody = comment.body.toLowerCase();
               if (lowercaseCommentBody.includes("fyi")) {
                 const restCommentBody = lowercaseCommentBody.replace("fyi", "");
-                const profiles = restCommentBody.replace(/[^\w\s]/g, '');
+                let profiles = restCommentBody.replace(/[^\w\s]/g, '');
                 profiles = profiles.split().join(", ");
                 resultString += `Actual Assignees: ${profiles}\n`;
                 assigned = true;
