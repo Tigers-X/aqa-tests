@@ -25,11 +25,9 @@ jobs:
                 script: |
                     const axios = require('axios');
                     
-                    let input = {
-                      "issue": {
-                        "issue_title": context.payload.issue.title,
-                        "issue_description": context.payload.issue.description,
-                      }
+                    const input = {
+                      "issue_title": context.payload.issue.title,
+                      "issue_description": context.payload.issue.body,
                     }
 
                     console.log('input: ', input)
