@@ -28,6 +28,8 @@ jobs:
             const sandboxOwner = context.repo.owner;
             const sandboxRepo = context.repo.repo;
 
+            resultString = `Issue number: ${context.issue.number}\n`;
+            let assigned = false;
             const actualLabels = issueData.data.labels.map(label => label['name']);
 
             resultString = `Issue Number: ${context.issue.number}\n`;
