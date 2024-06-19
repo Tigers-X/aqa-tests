@@ -1,0 +1,63 @@
+name: Testing Triager on Opened issues
+run-name: Triager Tester in GitHub Actions
+
+on:
+    issues:
+        types: [opened]
+
+jobs:
+    issue_opened:
+        name: Issue Opened
+        runs-on: ubuntu-latest
+        steps:
+          - name: Install dependencies
+            run: npm install axios
+
+          - name: commenting on issues
+            uses: actions/github-script@v4
+            with: 
+                github-token: ${{secrets.GITHUB_TOKEN}}
+                script: |
+                    const axios = require('axios');
+                    let input = {
+                      "issue": {
+                        "title": context.payload.issue.title,
+                        "body": context.payload.issue.body,
+                      }
+                    } 
+                    console.log('input: ', input)
+
+                    const apiUrl = "http://140.211.168.122/recommendation";
+                    const sandboxIssueNumber = 19673;
+
+                    try {
+                      const response = await axios.post(apiUrl, JSON.stringify(input), {
+                        headers: {
+                            'Content-Type': 'application/json'
+                          }
+                      });
+
+                      const issueComment = response.data;
+                      predictedAssignees = issueComment.recommended_developers;
+                      predictedLabels = issueComment.recommended_components;
+
+                      resultString = `Issue Number: ${context.issue.number}\n`;
+                      resultString += `Recommended Components: ${predictedLabels.join(', ')}\n`;
+                      resultString += `Recommended Assignees: ${predictedAssignees.join(', ')}\n`;
+                    
+                      await github.issues.createComment({
+                        issue_number: sandboxIssueNumber,
+                        owner: "eclipse-openj9",
+                        repo: "openj9",
+                        body: resultString
+                      });
+
+                    } catch (error) {
+                      await github.issues.createComment({
+                        issue_number: sandboxIssueNumber,
+                        owner: "eclipse-openj9",
+                        repo: "openj9",
+                        body: "Our server is down, please try again later."
+                      });
+                    }
+                    run();
