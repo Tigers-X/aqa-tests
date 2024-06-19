@@ -34,6 +34,7 @@ jobs:
             const actualLabels = issueData.labels.map(label => label['name']);
 
             resultString = `Issue number: ${context.issue.number}\n`;
+            resultString += 'Status: Closed';
             resultString += `Actual Components: ${actualLabels.join(', ')}\n`;
 
             // Filtering the Comments Data to find "FYI"

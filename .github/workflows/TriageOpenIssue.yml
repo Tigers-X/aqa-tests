@@ -49,6 +49,7 @@ jobs:
                     predictedLabels = issueComment.recommended_components;
 
                     resultString = `Issue Number: ${context.issue.number}\n`;
+                    resultString += 'Status: Open';
                     resultString += `Recommended Components: ${predictedLabels.join(', ')}\n`;
                     resultString += `Recommended Assignees: ${predictedAssignees.join(', ')}\n`;
                   
@@ -66,6 +67,5 @@ jobs:
                       body: `Error: ${error.message}`,
                     });
                   }
-                  
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
