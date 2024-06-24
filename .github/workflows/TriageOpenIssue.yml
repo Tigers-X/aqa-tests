@@ -20,7 +20,7 @@ jobs:
 
         - name: commenting on issues
           uses: actions/github-script@v4
-          with: 
+          with:
               script: |
                   const axios = require('axios');
                   
